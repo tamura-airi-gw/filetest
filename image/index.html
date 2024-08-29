@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>画像アップロードプレビュー</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .container {
+            max-width: 400px;
+            width: 100%;
+            text-align: center;
+        }
+
+        input[type="file"] {
+            width: 100%;
+            margin: 20px 0;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        img {
+            margin-top: 20px;
+            max-width: 100%;
+            height: auto;
+            display: none;
+        }
+
+        @media (max-width: 600px) {
+            button {
+                width: 100%;
+                font-size: 18px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <a href="../pdf/index.html">書類対応</a>　<a href="../image/index.html">画像のみ</a>
+        <h2>画像アップロードプレビュー</h2>
+        <input type="file" id="fileInput" accept=".heic, .jpeg, .jpg, .png, .gif">
+        <button id="uploadButton">OK</button>
+        <img id="preview" alt="プレビュー画像">
+    </div>
+
+    <script>
+        const showImage = () => {
+            const fileInput = document.getElementById('fileInput');
+            const preview = document.getElementById('preview');
+            const file = fileInput.files[0];
+
+            if (file) {
+                const fileType = file.type;
+                if (fileType === 'image/jpeg' || fileType === 'image/jpg') {
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        preview.src = e.target.result;
+                        preview.style.display = 'block';
+                    };
+                    reader.readAsDataURL(file);
+                } else {
+                    alert('JPEGまたはJPGファイルを選択してください。');
+                    preview.style.display = 'none';
+                }
+            } else {
+                alert('ファイルを選択してください。');
+                preview.style.display = 'none';
+            }
+        };
+
+        document.getElementById('uploadButton').addEventListener('click', showImage);
+    </script>
+</body>
+</html>
